@@ -1,0 +1,12 @@
+#ifndef MODEL_TEST_MISC_H_
+#define MODEL_TEST_MISC_H_
+
+// #define LOOP_SIZE 1000
+#define LOOP_SIZE 100
+// #define INPUT_IMAGE_SIZE 80
+// #define INPUT_IMAGE_SIZE 224
+#define INPUT_IMAGE_SIZE 56
+#define INPUT_IMAGE_CHANNEL 3
+#define OUTPUT_VECTOR_SIZE 1000
+
+#endif // MODEL_TEST_MISC_H_
