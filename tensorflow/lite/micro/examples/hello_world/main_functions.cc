@@ -15,6 +15,7 @@ limitations under the License.
 
 #include "tensorflow/lite/micro/examples/hello_world/main_functions.h"
 // #include <sys/types.h>
+#include <chrono>
 #include <iomanip>
 
 // #include "stm32469i_discovery.h"
@@ -47,7 +48,8 @@ limitations under the License.
 #include "tensorflow/lite/schema/schema_generated.h"
 
 #include "misc.h"
-#include "common.h"
+// #include "common.h"
+#include "mbed.h"
 
 
 // Globals, used for compatibility with Arduino-style sketches.
@@ -136,7 +138,9 @@ int setup() {
 
 // The name of this function is important for Arduino compatibility.
 void loop() {
-    float run_time = -get_time_mark();
+    // float run_time = -get_time_mark();
+    mbed::Timer timer;
+    timer.start();
     for (uint32_t loop_i = 0; loop_i < LOOP_SIZE; ++loop_i) { 
         for (uint32_t i = 0; i < INPUT_IMAGE_SIZE * INPUT_IMAGE_SIZE * INPUT_IMAGE_CHANNEL; ++i) {
             input->data.int8[i] = 0;
@@ -156,12 +160,16 @@ void loop() {
         // }
         // TF_LITE_REPORT_ERROR(error_reporter, "\n");
     }
-    run_time += get_time_mark();
-    TF_LITE_REPORT_ERROR(error_reporter, 
-                            "run_time(s.): %f "
-                            "latency(ms.): %f ",
-                            run_time,
-                            run_time / LOOP_SIZE * 1000.0);
+    // run_time += get_time_mark();
+    // TF_LITE_REPORT_ERROR(error_reporter, 
+    //                         "run_time(s.): %f "
+    //                         "latency(ms.): %f ",
+    //                         run_time,
+    //                         run_time / LOOP_SIZE * 1000.0);
+    timer.stop();
+    printf("run_time(ms.): %llu latency(us.): %llu\n", 
+            std::chrono::duration_cast<std::chrono::milliseconds>(timer.elapsed_time()).count(),
+            timer.elapsed_time().count() / LOOP_SIZE);    
 
 //   {  //
 //      // for (int i = 0; i < 100; ++i) {
